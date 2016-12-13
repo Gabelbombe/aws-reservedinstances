@@ -7,6 +7,25 @@ Namespace Helpers
   {
     private $args = [];
 
+    private $map  = [
+      'ec2'         => [ 'Aliases' => ['ec2', 'instance', 'node'],
+          'Client'  => 'Ec2\\Ec2Client',
+      ],
+
+      'rds'         => [ 'Aliases' => ['rds', 'db', 'database' ],
+          'Client'  => 'Rds\\RdsClient',
+      ],
+
+      'elasticache' => [ 'Aliases' => ['ecc', 'cache', 'cluster'],
+          'Client'  => 'ElastiCache\\ElastiCacheClient',
+      ],
+
+      'redshift'      => [ 'Aliases' => ['rsf', 'red', 'shift'],
+            'Client'  => 'Redshift\\RedshiftClient',
+      ],
+    ];
+
+
     /**
      * Bootstrap constructor.
      * @param array $payload
@@ -22,13 +41,23 @@ Namespace Helpers
           'Accounts' => []
       ]]);
 
-      $this->setArguments($_GET,                []); //filter if reqs
-      $this->setArguments($config->getConfig(), []);
+      $this->setArguments($_GET,                ['DryRun']  ); //filter if reqs
+      $this->setArguments($config->getConfig(), ['Accounts']);
     }
 
     public function run()
     {
-      print_r($this);
+
+      if (isset($this->args ['Accounts']) && ! empty($this->args ['Use']))
+      {
+        foreach ($this->args ['Accounts'] AS $name => $number)
+        {
+          foreach ($this->args ['Use'] [$name] AS $service)
+          {
+            echo "{$number}: " . ucfirst($service) . "Client\n";
+          }
+        }
+      }
     }
 
     /**
@@ -48,6 +77,11 @@ Namespace Helpers
 
       $this->args = ($args + $this->args);
       return $this;
+    }
+
+    private function get($string)
+    {
+      return (isset($this->args->$string)) ? $this->args->$string : null;
     }
   }
 }
