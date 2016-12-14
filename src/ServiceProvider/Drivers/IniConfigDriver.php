@@ -1,7 +1,7 @@
 <?php
 Namespace ServiceProvider\Drivers
 {
-  require dirname(__DIR__) . '/ConfigDriver.php';
+//  include dirname(__DIR__) . '/ConfigDriver.php';
 
   USE ServiceProvider\ConfigDriver AS ConfigDriver;
 

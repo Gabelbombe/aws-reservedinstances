@@ -9,6 +9,8 @@ define('ENV_MODE', getenv('ENV_MODE') ? getenv('ENV_MODE') : 'Dev');
 define('ENV_FILE', dirname(__DIR__) . '/config/' . (getenv('APP_ENV') ?: 'config') . '.json');
 define('APP_PATH', dirname(__DIR__));
 
+define('CONF_DIR', APP_PATH . '/config');
+
 $payload =
   [
     'type' => (! isset($argv) ?: 0),

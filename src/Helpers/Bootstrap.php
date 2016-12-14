@@ -2,29 +2,11 @@
 Namespace Helpers
 {
   USE ServiceProvider\ConfigServiceProvider AS Config;
+  USE ServiceMapper\AwsServiceMapper        AS Mapper;
 
   Class Bootstrap
   {
     private $args = [];
-
-    private $map  = [
-      'ec2'         => [ 'Aliases' => ['ec2', 'instance', 'node'],
-          'Client'  => 'Ec2\\Ec2Client',
-      ],
-
-      'rds'         => [ 'Aliases' => ['rds', 'db', 'database' ],
-          'Client'  => 'Rds\\RdsClient',
-      ],
-
-      'elasticache' => [ 'Aliases' => ['ecc', 'cache', 'cluster'],
-          'Client'  => 'ElastiCache\\ElastiCacheClient',
-      ],
-
-      'redshift'      => [ 'Aliases' => ['rsf', 'red', 'shift'],
-            'Client'  => 'Redshift\\RedshiftClient',
-      ],
-    ];
-
 
     /**
      * Bootstrap constructor.
@@ -47,6 +29,7 @@ Namespace Helpers
 
     public function run()
     {
+      $map = New Mapper('services.json'); //should be abstracted into a variable somewhere...
 
       if (isset($this->args ['Accounts']) && ! empty($this->args ['Use']))
       {
@@ -54,6 +37,8 @@ Namespace Helpers
         {
           foreach ($this->args ['Use'] [$name] AS $service)
           {
+
+
             echo "{$number}: " . ucfirst($service) . "Client\n";
           }
         }
@@ -64,8 +49,7 @@ Namespace Helpers
      * Set requirements
      *
      * @param array $args
-     * @param array $reqs
-     * @return $this
+     * @param array $reqs     * @return $this
      */
     protected function setArguments(array $args = [], array $reqs)
     {

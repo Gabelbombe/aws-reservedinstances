@@ -8,7 +8,6 @@ Namespace ServiceProvider
     private $replacements = [],
             $config       = [];
 
-
     /**
      * ConfigServiceProvider constructor.
      * @param string $filename
@@ -27,8 +26,7 @@ Namespace ServiceProvider
       $drivers = [];
 
       foreach (glob(__DIR__ . "/Drivers/*.php", GLOB_NOCHECK) AS $filename) {
-        require $filename;
-
+        include_once $filename;
         $class = 'ServiceProvider\\Drivers\\' . str_replace('.php', '', basename($filename));
         $drivers[] = New $class();
       }
